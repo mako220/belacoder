@@ -288,7 +288,7 @@ void update_bitrate(SRT_TRACEBSTATS *stats, uint64_t ctime) {
   if (bitrate != cur_bitrate) {
     cur_bitrate = bitrate;
 
-    g_object_set (G_OBJECT(encoder), "bitrate", rounded_br / enc_bitrate_div, NULL);
+    g_object_set (G_OBJECT(encoder), "bps", rounded_br , NULL);
 
     debug("set bitrate to %d, internal value %d\n", rounded_br, cur_bitrate);
   }
@@ -374,7 +374,7 @@ int parse_ip(struct sockaddr_in *addr, char *ip_str) {
   if (ip == -1) return -1;
 
   memset(addr, 0, sizeof(*addr));
-  addr->sin_family = AF_INET; 
+  addr->sin_family = AF_INET;
   addr->sin_addr.s_addr = ip;
 
   return 0;
@@ -661,7 +661,7 @@ int main(int argc, char** argv) {
     enc_bitrate_div = 1000;
   }
   if (GST_IS_ELEMENT(encoder)) {
-    g_object_set (G_OBJECT(encoder), "bitrate", cur_bitrate / enc_bitrate_div, NULL);
+    g_object_set (G_OBJECT(encoder), "bps", cur_bitrate , NULL);
   } else {
     fprintf(stderr, "Failed to get an encoder element from the pipeline, "
                     "no dynamic bitrate control\n");
